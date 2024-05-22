@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
 
 public class GuardAI : MonoBehaviour
 {
@@ -11,15 +10,17 @@ public class GuardAI : MonoBehaviour
     public List<Transform> waypoints;
     private int currentWaypointIndex = 0;
 
-    private GameObject player;
-    private float patrolSpeed = 2f;
+    public GameObject player;
+    public float patrolSpeed = 2f;
 
     [Header("Waiting Time")]
     public float waitTimeAtWaypoint = 2f;
     private bool isWaiting = false;
+    private bool hasAlertedGuards = false;
 
     [Header("Raycast Settings")]
     public float raycastDistance = 10f;
+    private Vector3 raycastDirection = Vector3.right;
 
     private void Start()
     {
@@ -50,6 +51,8 @@ public class GuardAI : MonoBehaviour
         {
             currentState.Enter();
         }
+
+        hasAlertedGuards = false;
     }
 
     /// <summary>
@@ -59,10 +62,9 @@ public class GuardAI : MonoBehaviour
     public bool SeesPlayer()
     {
         RaycastHit hit;
-        Vector3 direction = GetMovementDirection();
-        Debug.DrawRay(transform.position, direction * raycastDistance, Color.red);
+        Debug.DrawRay(transform.position, raycastDirection * raycastDistance, Color.red);
 
-        if (Physics.Raycast(transform.position, direction, out hit, raycastDistance))
+        if (Physics.Raycast(transform.position, raycastDirection, out hit, raycastDistance))
         {
             if (hit.collider.CompareTag("Player"))
             {
@@ -95,7 +97,11 @@ public class GuardAI : MonoBehaviour
     /// </summary>
     public void AlertOtherGuards()
     {
-        Debug.Log("ALERT ALERT!!!!");
+        if (!hasAlertedGuards) // Check if guards have been alerted
+        {
+            Debug.Log("ALERT ALERT!!!!");
+            hasAlertedGuards = true; // Set the flag to true to indicate that guards have been alerted
+        }
     }
 
     /// <summary>
@@ -123,5 +129,16 @@ public class GuardAI : MonoBehaviour
         yield return new WaitForSeconds(waitTimeAtWaypoint);
         currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Count;
         isWaiting = false;
+    }
+
+    public void FollowPlayer()
+    {
+        Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
+        // Bewegung des Wächters in Richtung des Spielers
+        transform.position = Vector3.MoveTowards(transform.position, player.transform.position, patrolSpeed * Time.deltaTime);
+        // Ausrichtung des Wächters in Richtung des Spielers
+        transform.right = directionToPlayer;
+        // Aktualisierung des Raycasts basierend auf der neuen Ausrichtung
+        raycastDirection = directionToPlayer;
     }
 }
