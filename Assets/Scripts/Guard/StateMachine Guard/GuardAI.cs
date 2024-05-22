@@ -5,8 +5,18 @@ using UnityEngine.XR;
 
 public class GuardAI : MonoBehaviour
 {
-    private GameObject player;
     private W_IState currentState;
+
+    [Header("Patrol Settings")]
+    public List<Transform> waypoints;
+    private int currentWaypointIndex = 0;
+
+    private GameObject player;
+    private float patrolSpeed = 2f;
+
+    [Header("Waiting Time")]
+    public float waitTimeAtWaypoint = 2f;
+    private bool isWaiting = false;
 
     private void Start()
     {
@@ -52,5 +62,26 @@ public class GuardAI : MonoBehaviour
     public void AlertOtherGuards()
     {
         Debug.Log("ALERT ALERT!!!!");
+    }
+
+    public void Patrol()
+    {
+        if (waypoints.Count == 0 || isWaiting) return;
+
+        Transform targetWaypoint = waypoints[currentWaypointIndex];
+        transform.position = Vector3.MoveTowards(transform.position, targetWaypoint.position, patrolSpeed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, targetWaypoint.position) < 0.1f)
+        {
+            StartCoroutine(WaitAtWaypoint());
+        }
+    }
+
+    private IEnumerator WaitAtWaypoint()
+    {
+        isWaiting = true;
+        yield return new WaitForSeconds(waitTimeAtWaypoint);
+        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Count;
+        isWaiting = false;
     }
 }
