@@ -16,11 +16,12 @@ public class GuardAI : MonoBehaviour
     [Header("Waiting Time")]
     public float waitTimeAtWaypoint = 2f;
     private bool isWaiting = false;
-    private bool hasAlertedGuards = false;
 
     [Header("Raycast Settings")]
     public float raycastDistance = 10f;
     private Vector3 raycastDirection = Vector3.right;
+
+    private bool hasAlertedGuards = false;
 
     private void Start()
     {
@@ -36,10 +37,6 @@ public class GuardAI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Changes the current state of the guard to the new state.
-    /// </summary>
-    /// <param name="newState">The new state to transition to.</param>
     public void ChangeState(W_IState newState)
     {
         if (currentState != null)
@@ -55,10 +52,6 @@ public class GuardAI : MonoBehaviour
         hasAlertedGuards = false;
     }
 
-    /// <summary>
-    /// Checks if the guard can see the player using a raycast.
-    /// </summary>
-    /// <returns>True if the guard sees the player, false otherwise.</returns>
     public bool SeesPlayer()
     {
         RaycastHit hit;
@@ -74,39 +67,17 @@ public class GuardAI : MonoBehaviour
         return false;
     }
 
-    /// <summary>
-    /// Determines the direction the guard is moving towards based on waypoints.
-    /// </summary>
-    /// <returns>The normalized direction vector towards the next waypoint.</returns>
-    private Vector3 GetMovementDirection()
-    {
-        Vector3 direction = Vector3.zero;
-
-        if (currentWaypointIndex < waypoints.Count)
-        {
-            Vector3 nextWaypoint = waypoints[currentWaypointIndex].position;
-            Vector3 currentPosition = transform.position;
-            direction = (nextWaypoint - currentPosition).normalized;
-        }
-
-        return direction;
-    }
-
-    /// <summary>
-    /// Alerts other guards that the player has been spotted.
-    /// </summary>
     public void AlertOtherGuards()
     {
-        if (!hasAlertedGuards) // Check if guards have been alerted
+
+        if (!hasAlertedGuards)
         {
             Debug.Log("ALERT ALERT!!!!");
-            hasAlertedGuards = true; // Set the flag to true to indicate that guards have been alerted
+            hasAlertedGuards = true;
         }
+
     }
 
-    /// <summary>
-    /// Patrols between waypoints. Moves the guard towards the current waypoint.
-    /// </summary>
     public void Patrol()
     {
         if (waypoints.Count == 0 || isWaiting) return;
@@ -120,9 +91,6 @@ public class GuardAI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Waits at the current waypoint for the specified time before moving to the next waypoint.
-    /// </summary>
     private IEnumerator WaitAtWaypoint()
     {
         isWaiting = true;
@@ -134,11 +102,11 @@ public class GuardAI : MonoBehaviour
     public void FollowPlayer()
     {
         Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
-        // Bewegung des Wächters in Richtung des Spielers
+        
         transform.position = Vector3.MoveTowards(transform.position, player.transform.position, patrolSpeed * Time.deltaTime);
-        // Ausrichtung des Wächters in Richtung des Spielers
+        
         transform.right = directionToPlayer;
-        // Aktualisierung des Raycasts basierend auf der neuen Ausrichtung
+        
         raycastDirection = directionToPlayer;
     }
 }

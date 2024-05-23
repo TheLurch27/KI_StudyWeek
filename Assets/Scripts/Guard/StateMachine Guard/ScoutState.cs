@@ -26,16 +26,16 @@ public class ScoutState : W_IState
         if (guard.SeesPlayer())
         {
             playerSeen = true;
-            lostPlayerTime = Time.time + timeToLosePlayer; // Setze Zeitpunkt, zu dem der Spieler verloren geht
-            guard.AlertOtherGuards(); // Alarmiere andere Wachen
+            lostPlayerTime = Time.time + timeToLosePlayer;
+            guard.AlertOtherGuards();
         }
         else if (playerSeen && Time.time > lostPlayerTime)
         {
-            guard.ChangeState(new CalmDownState(guard)); // Spieler für 10 Sekunden nicht mehr gesehen, wechsle zu CalmDown
+            guard.ChangeState(new CalmDownState(guard));
         }
         else
         {
-            guard.FollowPlayer(); // Folge dem Spieler
+            guard.FollowPlayer();
         }
     }
 
