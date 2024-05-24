@@ -1,11 +1,13 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorController : MonoBehaviour
+public class SafeController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject OpenDoor;
+    private GameObject SafeOpen;
     [SerializeField]
-    private GameObject ClosedDoor;
+    private GameObject SafeClosed;
     [SerializeField]
     private float detectionRadius = 2.0f;
     private Transform PlayerTransform;
@@ -15,12 +17,12 @@ public class DoorController : MonoBehaviour
     {
         isPlayerNear = false;
         PlayerTransform = GameObject.FindGameObjectWithTag("Player").transform;
-        OpenDoor.SetActive(false);
+        SafeOpen.SetActive(false);
     }
 
     private void Update()
     {
-        if(Vector3.Distance(PlayerTransform.position, transform.position) < detectionRadius)
+        if (Vector3.Distance(PlayerTransform.position, transform.position) < detectionRadius)
         {
             isPlayerNear = true;
         }
@@ -28,7 +30,7 @@ public class DoorController : MonoBehaviour
         {
             isPlayerNear = false;
         }
-        if(isPlayerNear && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
         {
             ToggleDoorState();
         }
@@ -36,15 +38,15 @@ public class DoorController : MonoBehaviour
 
     private void ToggleDoorState()
     {
-        if(ClosedDoor.activeSelf)
+        if (SafeClosed.activeSelf)
         {
-            ClosedDoor.SetActive(false);
-            OpenDoor.SetActive(true);
+            SafeClosed.SetActive(false);
+            SafeOpen.SetActive(true);
         }
         else
         {
-            ClosedDoor.SetActive(true);
-            ClosedDoor.SetActive(false);
+            SafeOpen.SetActive(true);
+            SafeClosed.SetActive(false);
         }
     }
 }
