@@ -2075,16 +2075,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbeb26d35349c145b719ce7ee40fa43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   waypoints:
   - {fileID: 214679753}
   - {fileID: 1499745110}
   - {fileID: 1474885635}
   - {fileID: 1499745110}
+  player: {fileID: 1530237471}
   patrolSpeed: 2
   scoutSpeed: 4
-  viewAngle: 90
-  viewDistance: 3
 --- !u!212 &810065242
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2149,14 +2147,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d4418a159e9af14184d830328511280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  viewAngle: 61
-  viewDistance: 10
+  viewAngle: 18.3
+  viewDistance: 11.17
   targetMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   obstructionMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 448
+  showViewGizmos: 1
 --- !u!195 &810065245
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2192,6 +2191,7 @@ GameObject:
   - component: {fileID: 812430046}
   - component: {fileID: 812430045}
   - component: {fileID: 812430049}
+  - component: {fileID: 812430050}
   m_Layer: 0
   m_Name: Guard 2
   m_TagString: Guard
@@ -2271,14 +2271,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbeb26d35349c145b719ce7ee40fa43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   waypoints:
   - {fileID: 2141070210}
   - {fileID: 34201884}
+  player: {fileID: 0}
   patrolSpeed: 2
   scoutSpeed: 4
-  viewAngle: 90
-  viewDistance: 10
 --- !u!212 &812430047
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2353,6 +2351,27 @@ NavMeshAgent:
   m_BaseOffset: 0.49
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &812430050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 812430043}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4418a159e9af14184d830328511280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAngle: 18.3
+  viewDistance: 11.17
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 448
+  showViewGizmos: 1
 --- !u!1 &887697523
 GameObject:
   m_ObjectHideFlags: 0
@@ -3524,6 +3543,7 @@ GameObject:
   - component: {fileID: 1227385921}
   - component: {fileID: 1227385920}
   - component: {fileID: 1227385924}
+  - component: {fileID: 1227385925}
   m_Layer: 0
   m_Name: Guard 5
   m_TagString: Guard
@@ -3603,14 +3623,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbeb26d35349c145b719ce7ee40fa43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   waypoints:
   - {fileID: 2105038097}
   - {fileID: 1508372678}
+  player: {fileID: 1530237471}
   patrolSpeed: 2
   scoutSpeed: 4
-  viewAngle: 90
-  viewDistance: 10
 --- !u!212 &1227385922
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -3685,6 +3703,27 @@ NavMeshAgent:
   m_BaseOffset: 0.49
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1227385925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1227385918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4418a159e9af14184d830328511280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAngle: 18.3
+  viewDistance: 11.17
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 448
+  showViewGizmos: 1
 --- !u!1 &1235976180
 GameObject:
   m_ObjectHideFlags: 0
@@ -5008,6 +5047,7 @@ GameObject:
   - component: {fileID: 1680171805}
   - component: {fileID: 1680171804}
   - component: {fileID: 1680171808}
+  - component: {fileID: 1680171809}
   m_Layer: 0
   m_Name: Guard 3
   m_TagString: Guard
@@ -5087,14 +5127,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbeb26d35349c145b719ce7ee40fa43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   waypoints:
   - {fileID: 887697524}
   - {fileID: 987591005}
+  player: {fileID: 0}
   patrolSpeed: 2
   scoutSpeed: 4
-  viewAngle: 90
-  viewDistance: 10
 --- !u!212 &1680171806
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5169,6 +5207,27 @@ NavMeshAgent:
   m_BaseOffset: 0.49
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1680171809
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1680171802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4418a159e9af14184d830328511280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAngle: 18.3
+  viewDistance: 11.17
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 448
+  showViewGizmos: 1
 --- !u!1 &1681095900
 GameObject:
   m_ObjectHideFlags: 0
@@ -5828,6 +5887,7 @@ GameObject:
   - component: {fileID: 2098573616}
   - component: {fileID: 2098573615}
   - component: {fileID: 2098573619}
+  - component: {fileID: 2098573620}
   m_Layer: 0
   m_Name: Guard 4
   m_TagString: Guard
@@ -5907,16 +5967,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bbeb26d35349c145b719ce7ee40fa43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
   waypoints:
   - {fileID: 2069806217}
   - {fileID: 1906145050}
   - {fileID: 1324514051}
   - {fileID: 1906145050}
+  player: {fileID: 0}
   patrolSpeed: 2
   scoutSpeed: 4
-  viewAngle: 90
-  viewDistance: 10
 --- !u!212 &2098573617
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5991,6 +6049,27 @@ NavMeshAgent:
   m_BaseOffset: 0.49
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &2098573620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2098573613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d4418a159e9af14184d830328511280, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  viewAngle: 18.3
+  viewDistance: 11.17
+  targetMask:
+    serializedVersion: 2
+    m_Bits: 8
+  obstructionMask:
+    serializedVersion: 2
+    m_Bits: 448
+  showViewGizmos: 1
 --- !u!1 &2105038096
 GameObject:
   m_ObjectHideFlags: 0

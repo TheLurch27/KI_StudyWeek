@@ -21,6 +21,10 @@ public class PatrolState : W_IState
         {
             guard.SetDestination(currentWaypoint.position);
         }
+        else
+        {
+            Debug.LogError("No waypoints assigned.");
+        }
     }
 
     public void Execute()
@@ -40,6 +44,10 @@ public class PatrolState : W_IState
                 if (currentWaypoint != null)
                 {
                     guard.SetDestination(currentWaypoint.position);
+                }
+                else
+                {
+                    Debug.LogError("No more waypoints to assign.");
                 }
             }
         }

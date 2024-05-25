@@ -6,28 +6,23 @@ public class GuardVision : MonoBehaviour
 {
     public float viewAngle = 90f;
     public float viewDistance = 10f;
-    public LayerMask playerMask;
-    public LayerMask obstacleMask;
+    public LayerMask targetMask;
+    public LayerMask obstructionMask;
+
+    [Header("Gizmos Settings")]
+    public bool showViewGizmos = true;  // Neues boolesches Feld zum Ein-/Ausschalten der Gizmos
 
     private Transform player;
     private bool canSeePlayer;
 
-    private Transform fovVisual;
-
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        fovVisual = transform.Find("FOVVisual");
-        if (fovVisual == null)
-        {
-            Debug.LogError("FOVVisual object not found. Please create a child object named 'FOVVisual' for the field of view visualization.");
-        }
     }
 
     void Update()
     {
         canSeePlayer = CheckIfPlayerInSight();
-        UpdateFOVVisual();
     }
 
     private bool CheckIfPlayerInSight()
@@ -41,7 +36,7 @@ public class GuardVision : MonoBehaviour
 
             if (distanceToPlayer < viewDistance)
             {
-                if (!Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstacleMask))
+                if (!Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstructionMask))
                 {
                     return true;
                 }
@@ -50,18 +45,10 @@ public class GuardVision : MonoBehaviour
         return false;
     }
 
-    void UpdateFOVVisual()
-    {
-        if (fovVisual == null)
-            return;
-
-        // Set FOVVisual position and rotation to match the guard
-        fovVisual.position = transform.position;
-        fovVisual.rotation = Quaternion.Euler(0, 0, transform.eulerAngles.z - viewAngle / 2f);
-    }
-
     void OnDrawGizmos()
     {
+        if (!showViewGizmos) return;  // Prüfen, ob Gizmos angezeigt werden sollen
+
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, viewDistance);
 
@@ -91,5 +78,10 @@ public class GuardVision : MonoBehaviour
     public bool CanSeePlayer()
     {
         return canSeePlayer;
+    }
+
+    public void UpdateVisionDirection(Vector3 direction)
+    {
+        transform.right = direction;
     }
 }

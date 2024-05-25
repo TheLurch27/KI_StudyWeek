@@ -5,27 +5,39 @@ using UnityEngine.AI;
 
 public class GuardAI : MonoBehaviour
 {
-    public GameObject player;
-    private W_IState currentState;
     public List<Transform> waypoints;
     private int currentWaypointIndex = 0;
     private NavMeshAgent agent;
     private List<GuardAI> allGuards;
+    public Transform player;
 
     [Header("Guard Speeds")]
     public float patrolSpeed = 2f;
     public float scoutSpeed = 4f;
 
     private GuardVision guardVision;
+    private W_IState currentState;
 
     private void Start()
     {
-        player = GameObject.FindWithTag("Player");
         agent = GetComponent<NavMeshAgent>();
         agent.updateRotation = false;
         agent.updateUpAxis = false;
-        allGuards = new List<GuardAI>(FindObjectsOfType<GuardAI>());
+
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+
         guardVision = GetComponent<GuardVision>();
+        if (guardVision == null)
+        {
+            Debug.LogError("GuardVision component not found.");
+        }
+
+        if (waypoints == null || waypoints.Count == 0)
+        {
+            Debug.LogError("No waypoints assigned to the guard.");
+        }
+
+        allGuards = new List<GuardAI>(FindObjectsOfType<GuardAI>());
         ChangeState(new PatrolState(this));
     }
 
@@ -34,6 +46,11 @@ public class GuardAI : MonoBehaviour
         if (currentState != null)
         {
             currentState.Execute();
+        }
+
+        if (agent.velocity != Vector3.zero)
+        {
+            guardVision.UpdateVisionDirection(agent.velocity.normalized);
         }
     }
 
@@ -52,7 +69,7 @@ public class GuardAI : MonoBehaviour
 
     public bool SeesPlayer()
     {
-        return guardVision.CanSeePlayer();
+        return guardVision != null && guardVision.CanSeePlayer();
     }
 
     public void AlertOtherGuards()
@@ -68,7 +85,7 @@ public class GuardAI : MonoBehaviour
 
     public Transform GetNextWaypoint()
     {
-        if (waypoints.Count == 0)
+        if (waypoints == null || waypoints.Count == 0)
             return null;
 
         Transform waypoint = waypoints[currentWaypointIndex];
@@ -78,16 +95,30 @@ public class GuardAI : MonoBehaviour
 
     public void SetDestination(Vector3 destination)
     {
-        agent.SetDestination(destination);
+        if (agent != null)
+        {
+            agent.SetDestination(destination);
+        }
     }
 
     public void SetPatrolSpeed()
     {
-        agent.speed = patrolSpeed;
+        if (agent != null)
+        {
+            agent.speed = patrolSpeed;
+        }
     }
 
     public void SetScoutSpeed()
     {
-        agent.speed = scoutSpeed;
+        if (agent != null)
+        {
+            agent.speed = scoutSpeed;
+        }
+    }
+
+    public Transform GetPlayerTransform()
+    {
+        return player;
     }
 }
