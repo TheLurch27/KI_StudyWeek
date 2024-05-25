@@ -5,7 +5,6 @@ using UnityEngine;
 public class PatrolState : W_IState
 {
     private GuardAI guard;
-
     public PatrolState(GuardAI guard)
     {
         this.guard = guard;
@@ -18,8 +17,6 @@ public class PatrolState : W_IState
 
     public void Execute()
     {
-        guard.Patrol();
-
         Debug.Log("Patrolling");
 
         if (guard.SeesPlayer())

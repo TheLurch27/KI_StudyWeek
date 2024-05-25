@@ -20,7 +20,7 @@ public class DoorController : MonoBehaviour
 
     private void Update()
     {
-        if(Vector3.Distance(PlayerTransform.position, transform.position) < detectionRadius)
+        if (Vector3.Distance(PlayerTransform.position, transform.position) < detectionRadius)
         {
             isPlayerNear = true;
         }
@@ -28,7 +28,7 @@ public class DoorController : MonoBehaviour
         {
             isPlayerNear = false;
         }
-        if(isPlayerNear && Input.GetKeyDown(KeyCode.E))
+        if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
         {
             ToggleDoorState();
         }
@@ -36,7 +36,7 @@ public class DoorController : MonoBehaviour
 
     private void ToggleDoorState()
     {
-        if(ClosedDoor.activeSelf)
+        if (ClosedDoor.activeSelf)
         {
             ClosedDoor.SetActive(false);
             OpenDoor.SetActive(true);
@@ -44,7 +44,19 @@ public class DoorController : MonoBehaviour
         else
         {
             ClosedDoor.SetActive(true);
-            ClosedDoor.SetActive(false);
+            OpenDoor.SetActive(false);
         }
+    }
+
+    
+    public bool IsDoorOpen()
+    {
+        return OpenDoor.activeSelf;
+    }
+
+    public void CloseDoor()
+    {
+        ClosedDoor.SetActive(true);
+        OpenDoor.SetActive(false);
     }
 }

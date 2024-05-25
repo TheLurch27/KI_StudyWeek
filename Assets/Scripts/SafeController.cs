@@ -9,6 +9,8 @@ public class SafeController : MonoBehaviour
     [SerializeField]
     private GameObject SafeClosed;
     [SerializeField]
+    private GameObject KeyCard;
+    [SerializeField]
     private float detectionRadius = 2.0f;
     private Transform PlayerTransform;
     private bool isPlayerNear;
@@ -32,16 +34,17 @@ public class SafeController : MonoBehaviour
         }
         if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
         {
-            ToggleDoorState();
+            ToggleSafeState();
         }
     }
 
-    private void ToggleDoorState()
+    private void ToggleSafeState()
     {
         if (SafeClosed.activeSelf)
         {
             SafeClosed.SetActive(false);
             SafeOpen.SetActive(true);
+            KeyCard.SetActive(true);
         }
         else
         {
