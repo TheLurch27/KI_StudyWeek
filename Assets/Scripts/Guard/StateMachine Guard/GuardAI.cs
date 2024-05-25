@@ -1,16 +1,31 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.XR;
+using UnityEngine.AI;
 
 public class GuardAI : MonoBehaviour
 {
-    private GameObject player;
+    public GameObject player;
     private W_IState currentState;
+    public List<Transform> waypoints;
+    private int currentWaypointIndex = 0;
+    private NavMeshAgent agent;
+    private List<GuardAI> allGuards;
+
+    [Header("Guard Speeds")]
+    public float patrolSpeed = 2f;
+    public float scoutSpeed = 4f;
+
+    private GuardVision guardVision;
 
     private void Start()
     {
         player = GameObject.FindWithTag("Player");
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
+        agent.updateUpAxis = false;
+        allGuards = new List<GuardAI>(FindObjectsOfType<GuardAI>());
+        guardVision = GetComponent<GuardVision>();
         ChangeState(new PatrolState(this));
     }
 
@@ -37,20 +52,42 @@ public class GuardAI : MonoBehaviour
 
     public bool SeesPlayer()
     {
-        RaycastHit hit;
-        Vector3 directionToPlayer = (player.transform.position - transform.position).normalized;
-        if (Physics.Raycast(transform.position, directionToPlayer, out hit, 10f))
-        {
-            if (hit.collider.CompareTag("Player"))
-            {
-                return true;
-            }
-        }
-        return false;
+        return guardVision.CanSeePlayer();
     }
 
     public void AlertOtherGuards()
     {
-        Debug.Log("ALERT ALERT!!!!");
+        foreach (GuardAI guard in allGuards)
+        {
+            if (guard != this)
+            {
+                guard.ChangeState(new AlertState(guard));
+            }
+        }
+    }
+
+    public Transform GetNextWaypoint()
+    {
+        if (waypoints.Count == 0)
+            return null;
+
+        Transform waypoint = waypoints[currentWaypointIndex];
+        currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Count;
+        return waypoint;
+    }
+
+    public void SetDestination(Vector3 destination)
+    {
+        agent.SetDestination(destination);
+    }
+
+    public void SetPatrolSpeed()
+    {
+        agent.speed = patrolSpeed;
+    }
+
+    public void SetScoutSpeed()
+    {
+        agent.speed = scoutSpeed;
     }
 }
