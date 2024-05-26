@@ -33,7 +33,7 @@ public class PatrolState : W_IState
 
         if (guard.SeesPlayer())
         {
-            guard.PlayerSeen(); // Hier wird die Methode PlayerSeen() aufgerufen, wenn der Spieler gesehen wird
+            guard.PlayerSeen();
             guard.ChangeState(new ScoutState(guard));
         }
         else

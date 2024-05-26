@@ -13,9 +13,15 @@ public class EndZoneController : MonoBehaviour
     private bool isPlayerNear;
 
     [SerializeField]
-    private GameObject KeyUI; // Referenz auf das UI-Element, das den Schlüssel anzeigt
+    private GameObject KeyUIGreen;
     [SerializeField]
-    private GameObject EndScreenCanvas; // Referenz auf das EndScreen-Canvas
+    private GameObject KeyUIRed;
+    [SerializeField]
+    private GameObject KeyUIBlue;
+    [SerializeField]
+    private GameObject KeyUIYellow;
+    [SerializeField]
+    private GameObject EndScreenCanvas;
 
     [SerializeField] private EndScreenManager endScreenManager;
 
@@ -57,8 +63,8 @@ public class EndZoneController : MonoBehaviour
 
     private bool IsKeyAcquired()
     {
-        // Überprüfe, ob das Schlüssel-UI-Element aktiv ist
-        return KeyUI != null && KeyUI.activeSelf;
+        
+        return KeyUIGreen != null && KeyUIGreen.activeSelf && KeyUIRed != null && KeyUIRed.activeSelf && KeyUIBlue != null && KeyUIBlue.activeSelf && KeyUIYellow != null && KeyUIYellow.activeSelf;
     }
 
     private void ToggleDoorState()
@@ -78,7 +84,7 @@ public class EndZoneController : MonoBehaviour
 
     private void ShowEndScreen()
     {
-        // Zeige ein zufälliges EndScreen an
+        
         endScreenManager.ShowRandomEndScreen();
     }
 

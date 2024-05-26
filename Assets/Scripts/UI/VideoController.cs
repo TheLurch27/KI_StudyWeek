@@ -4,24 +4,18 @@ using UnityEngine.Video;
 public class VideoController : MonoBehaviour
 {
     [SerializeField]
-    private GameObject endScreenCanvas; // Referenz auf das EndScreen-Canvas
+    private GameObject endScreenCanvas;
     private VideoPlayer videoPlayer;
 
     private void Start()
     {
         videoPlayer = GetComponent<VideoPlayer>();
 
-        if (videoPlayer == null)
-        {
-            Debug.LogError("VideoPlayer component not found on the GameObject.");
-            return;
-        }
-
-        videoPlayer.playOnAwake = false; // Video soll nicht automatisch beim Start abgespielt werden
+        videoPlayer.playOnAwake = false;
 
         if (endScreenCanvas != null)
         {
-            endScreenCanvas.SetActive(false); // Stelle sicher, dass das EndScreen-Canvas zunächst deaktiviert ist
+            endScreenCanvas.SetActive(false);
         }
     }
 

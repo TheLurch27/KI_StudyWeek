@@ -15,13 +15,13 @@ public class AlertState : W_IState
     public void Enter()
     {
         Debug.Log("Entering Alert State");
-        guard.AlertOtherGuards(true); // Übergebe true, um alle anderen Wächter zu alarmieren
+        guard.AlertOtherGuards(true);
     }
 
     public void Execute()
     {
         Debug.Log("Alerting others");
-        guard.ChangeState(new ScoutState(guard)); // Wechsel direkt in den ScoutState
+        guard.ChangeState(new ScoutState(guard));
     }
 
     public void Exit()
