@@ -2156,6 +2156,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 448
   showViewGizmos: 1
+  maxDistance: 10
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 448
 --- !u!195 &810065245
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -2371,7 +2375,11 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 448
-  showViewGizmos: 1
+  showViewGizmos: 0
+  maxDistance: 10
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &887697523
 GameObject:
   m_ObjectHideFlags: 0
@@ -3723,7 +3731,11 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 448
-  showViewGizmos: 1
+  showViewGizmos: 0
+  maxDistance: 10
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1235976180
 GameObject:
   m_ObjectHideFlags: 0
@@ -5227,7 +5239,11 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 448
-  showViewGizmos: 1
+  showViewGizmos: 0
+  maxDistance: 10
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &1681095900
 GameObject:
   m_ObjectHideFlags: 0
@@ -6069,7 +6085,11 @@ MonoBehaviour:
   obstructionMask:
     serializedVersion: 2
     m_Bits: 448
-  showViewGizmos: 1
+  showViewGizmos: 0
+  maxDistance: 10
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &2105038096
 GameObject:
   m_ObjectHideFlags: 0

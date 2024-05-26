@@ -10,19 +10,31 @@ public class GuardVision : MonoBehaviour
     public LayerMask obstructionMask;
 
     [Header("Gizmos Settings")]
-    public bool showViewGizmos = true;  // Neues boolesches Feld zum Ein-/Ausschalten der Gizmos
+    public bool showViewGizmos = true;
 
     private Transform player;
     private bool canSeePlayer;
+    private GuardAI guardAI;
 
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player").transform;
+        guardAI = GetComponent<GuardAI>();
     }
 
     void Update()
     {
+        bool previousCanSeePlayer = canSeePlayer;
         canSeePlayer = CheckIfPlayerInSight();
+
+        if (canSeePlayer && !previousCanSeePlayer)
+        {
+            guardAI.ChangeState(new ScoutState(guardAI));
+        }
+        else if (!canSeePlayer && previousCanSeePlayer)
+        {
+            guardAI.ChangeState(new CalmDownState(guardAI));
+        }
     }
 
     private bool CheckIfPlayerInSight()
@@ -36,18 +48,32 @@ public class GuardVision : MonoBehaviour
 
             if (distanceToPlayer < viewDistance)
             {
-                if (!Physics2D.Raycast(transform.position, directionToPlayer, distanceToPlayer, obstructionMask))
+                RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, viewDistance, obstructionMask | targetMask);
+                if (hit.collider != null)
                 {
-                    return true;
+                    if (hit.collider.CompareTag("Player"))
+                    {
+                        Debug.Log("Player detected");
+                        return true;
+                    }
+                    else
+                    {
+                        Debug.Log("Obstruction detected: " + hit.collider.name);
+                    }
+                }
+                else
+                {
+                    Debug.Log("No obstruction, player in sight");
                 }
             }
         }
+
         return false;
     }
 
     void OnDrawGizmos()
     {
-        if (!showViewGizmos) return;  // Prüfen, ob Gizmos angezeigt werden sollen
+        if (!showViewGizmos) return;
 
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, viewDistance);

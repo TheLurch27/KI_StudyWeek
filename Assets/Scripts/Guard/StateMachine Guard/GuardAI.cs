@@ -17,6 +17,11 @@ public class GuardAI : MonoBehaviour
 
     private GuardVision guardVision;
     private W_IState currentState;
+    private bool inAlertState = false;
+    private float alertTimer = 0f;
+    private float alertDuration = 10f;
+    private float calmDownDuration = 10f;
+    private bool playerSeen = false;
 
     private void Start()
     {
@@ -52,6 +57,23 @@ public class GuardAI : MonoBehaviour
         {
             guardVision.UpdateVisionDirection(agent.velocity.normalized);
         }
+
+        if (SeesPlayer()) // Überprüfe, ob der Spieler gesehen wird
+        {
+            PlayerSeen();
+        }
+
+        if (playerSeen)
+        {
+            alertTimer += Time.deltaTime;
+            if (alertTimer >= alertDuration)
+            {
+                alertTimer = 0f;
+                playerSeen = false;
+                inAlertState = false;
+                AlertOtherGuards(false);
+            }
+        }
     }
 
     public void ChangeState(W_IState newState)
@@ -69,16 +91,21 @@ public class GuardAI : MonoBehaviour
 
     public bool SeesPlayer()
     {
-        return guardVision != null && guardVision.CanSeePlayer();
+        bool seesPlayer = guardVision != null && guardVision.CanSeePlayer();
+        Debug.Log("SeesPlayer: " + seesPlayer);
+        return seesPlayer;
     }
 
-    public void AlertOtherGuards()
+    public void AlertOtherGuards(bool alert)
     {
         foreach (GuardAI guard in allGuards)
         {
             if (guard != this)
             {
-                guard.ChangeState(new AlertState(guard));
+                if (alert)
+                    guard.ChangeState(new ScoutState(guard));
+                else
+                    guard.ChangeState(new PatrolState(guard));
             }
         }
     }
@@ -120,5 +147,18 @@ public class GuardAI : MonoBehaviour
     public Transform GetPlayerTransform()
     {
         return player;
+    }
+
+    public void PlayerSeen()
+    {
+        playerSeen = true;
+        Debug.Log("PlayerSeen called");
+        if (!inAlertState)
+        {
+            Debug.Log("Transitioning to AlertState");
+            inAlertState = true;
+            AlertOtherGuards(true);
+            ChangeState(new AlertState(this));
+        }
     }
 }
