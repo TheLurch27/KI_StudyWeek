@@ -58,4 +58,3 @@ public class PatrolState : W_IState
         Debug.Log("Exiting Patrol State");
     }
 }
-

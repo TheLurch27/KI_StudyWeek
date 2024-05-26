@@ -1,13 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class CalmDownState : W_IState
 {
     private GuardAI guard;
     private float calmDownTime = 10f;
     private float calmDownTimer = 0f;
+    private Vector3 searchAreaCenter;
+    private float searchRadius = 20f;
 
     public CalmDownState(GuardAI guard)
     {
@@ -18,15 +20,34 @@ public class CalmDownState : W_IState
     {
         Debug.Log("Entering Calm Down State");
         calmDownTimer = 0f;
+        searchAreaCenter = guard.transform.position;
     }
 
     public void Execute()
     {
         Debug.Log("Calm Down");
+
+        if (guard.SeesPlayer())
+        {
+            guard.ChangeState(new ScoutState(guard));
+            return;
+        }
+
         calmDownTimer += Time.deltaTime;
         if (calmDownTimer >= calmDownTime)
         {
             guard.ChangeState(new PatrolState(guard));
+        }
+        else
+        {
+            Vector3 randomDirection = Random.insideUnitCircle * searchRadius;
+            randomDirection += searchAreaCenter;
+
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(randomDirection, out hit, searchRadius, 1))
+            {
+                guard.SetDestination(hit.position);
+            }
         }
     }
 

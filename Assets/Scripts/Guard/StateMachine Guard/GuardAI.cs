@@ -58,7 +58,7 @@ public class GuardAI : MonoBehaviour
             guardVision.UpdateVisionDirection(agent.velocity.normalized);
         }
 
-        if (SeesPlayer()) // Überprüfe, ob der Spieler gesehen wird
+        if (SeesPlayer())
         {
             PlayerSeen();
         }

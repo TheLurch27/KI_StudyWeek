@@ -22,12 +22,21 @@ public class DoorController : MonoBehaviour
     {
         if (Vector3.Distance(PlayerTransform.position, transform.position) < detectionRadius)
         {
-            isPlayerNear = true;
+            if (!isPlayerNear)
+            {
+                isPlayerNear = true;
+                Debug.Log("Player detected within radius.");
+            }
         }
         else
         {
-            isPlayerNear = false;
+            if (isPlayerNear)
+            {
+                isPlayerNear = false;
+                Debug.Log("Player left the detection radius.");
+            }
         }
+
         if (isPlayerNear && Input.GetKeyDown(KeyCode.E))
         {
             ToggleDoorState();
@@ -48,7 +57,6 @@ public class DoorController : MonoBehaviour
         }
     }
 
-    
     public bool IsDoorOpen()
     {
         return OpenDoor.activeSelf;
@@ -58,5 +66,11 @@ public class DoorController : MonoBehaviour
     {
         ClosedDoor.SetActive(true);
         OpenDoor.SetActive(false);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, detectionRadius);
     }
 }
