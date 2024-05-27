@@ -1,11 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PatrolState : W_IState
 {
     private GuardAI guard;
     private Transform currentWaypoint;
+    private float waitTime = 2f;
+    private float waitTimer = 0f;
 
     public PatrolState(GuardAI guard)
     {
@@ -40,14 +40,19 @@ public class PatrolState : W_IState
         {
             if (currentWaypoint != null && Vector3.Distance(guard.transform.position, currentWaypoint.position) < 1f)
             {
-                currentWaypoint = guard.GetNextWaypoint();
-                if (currentWaypoint != null)
+                waitTimer += Time.deltaTime;
+                if (waitTimer >= waitTime)
                 {
-                    guard.SetDestination(currentWaypoint.position);
-                }
-                else
-                {
-                    Debug.LogError("No more waypoints to assign.");
+                    currentWaypoint = guard.GetNextWaypoint();
+                    if (currentWaypoint != null)
+                    {
+                        guard.SetDestination(currentWaypoint.position);
+                    }
+                    else
+                    {
+                        Debug.LogError("No more waypoints to assign.");
+                    }
+                    waitTimer = 0f;
                 }
             }
         }

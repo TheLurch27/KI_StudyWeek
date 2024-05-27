@@ -10,6 +10,8 @@ public class CalmDownState : W_IState
     private float calmDownTimer = 0f;
     private Vector3 searchAreaCenter;
     private float searchRadius = 20f;
+    private Vector3 currentSearchPoint;
+    private bool searchPointReached = true;
 
     public CalmDownState(GuardAI guard)
     {
@@ -20,7 +22,7 @@ public class CalmDownState : W_IState
     {
         Debug.Log("Entering Calm Down State");
         calmDownTimer = 0f;
-        searchAreaCenter = guard.transform.position;
+        searchAreaCenter = guard.GetLastKnownPosition(); // Search around the last known position
     }
 
     public void Execute()
@@ -40,13 +42,25 @@ public class CalmDownState : W_IState
         }
         else
         {
-            Vector3 randomDirection = Random.insideUnitCircle * searchRadius;
-            randomDirection += searchAreaCenter;
-
-            NavMeshHit hit;
-            if (NavMesh.SamplePosition(randomDirection, out hit, searchRadius, 1))
+            if (searchPointReached)
             {
-                guard.SetDestination(hit.position);
+                Vector3 randomDirection = Random.insideUnitCircle * searchRadius;
+                randomDirection += searchAreaCenter;
+
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(randomDirection, out hit, searchRadius, 1))
+                {
+                    currentSearchPoint = hit.position;
+                    guard.SetDestination(currentSearchPoint);
+                    searchPointReached = false;
+                }
+            }
+            else
+            {
+                if (Vector3.Distance(guard.transform.position, currentSearchPoint) < 1f)
+                {
+                    searchPointReached = true;
+                }
             }
         }
     }

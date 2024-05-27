@@ -27,7 +27,8 @@ public class ScoutState : W_IState
         if (guard.SeesPlayer())
         {
             scoutTimer = 0f;
-            guard.SetDestination(guard.player.transform.position);
+            guard.SetDestination(guard.GetPlayerTransform().position);
+            guard.PlayerSeen();
         }
         else
         {
@@ -35,6 +36,11 @@ public class ScoutState : W_IState
             if (scoutTimer >= scoutDuration)
             {
                 guard.ChangeState(new CalmDownState(guard));
+            }
+            else
+            {
+                // Move towards the last known position of the player
+                guard.SetDestination(guard.GetLastKnownPosition());
             }
         }
     }

@@ -15,13 +15,14 @@ public class GuardAI : MonoBehaviour
     public float patrolSpeed = 2f;
     public float scoutSpeed = 4f;
 
-    private GuardVision guardVision;
+    public GuardVision guardVision;
     private W_IState currentState;
     private bool inAlertState = false;
     private float alertTimer = 0f;
     private float alertDuration = 10f;
     private float calmDownDuration = 10f;
     private bool playerSeen = false;
+    private Vector3 lastKnownPosition;
 
     private void Start()
     {
@@ -91,9 +92,7 @@ public class GuardAI : MonoBehaviour
 
     public bool SeesPlayer()
     {
-        bool seesPlayer = guardVision != null && guardVision.CanSeePlayer();
-        Debug.Log("SeesPlayer: " + seesPlayer);
-        return seesPlayer;
+        return guardVision != null && guardVision.CanSeePlayer();
     }
 
     public void AlertOtherGuards(bool alert)
@@ -103,9 +102,14 @@ public class GuardAI : MonoBehaviour
             if (guard != this)
             {
                 if (alert)
+                {
                     guard.ChangeState(new ScoutState(guard));
+                    guard.SetDestination(lastKnownPosition);  // Set the destination to the last known position of the player
+                }
                 else
+                {
                     guard.ChangeState(new PatrolState(guard));
+                }
             }
         }
     }
@@ -152,13 +156,17 @@ public class GuardAI : MonoBehaviour
     public void PlayerSeen()
     {
         playerSeen = true;
-        Debug.Log("PlayerSeen called");
+        lastKnownPosition = player.position; // Update last known position
         if (!inAlertState)
         {
-            Debug.Log("Transitioning to AlertState");
             inAlertState = true;
             AlertOtherGuards(true);
             ChangeState(new AlertState(this));
         }
+    }
+
+    public Vector3 GetLastKnownPosition()
+    {
+        return lastKnownPosition;
     }
 }

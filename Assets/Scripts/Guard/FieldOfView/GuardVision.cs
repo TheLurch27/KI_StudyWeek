@@ -29,11 +29,7 @@ public class GuardVision : MonoBehaviour
 
         if (canSeePlayer && !previousCanSeePlayer)
         {
-            guardAI.ChangeState(new ScoutState(guardAI));
-        }
-        else if (!canSeePlayer && previousCanSeePlayer)
-        {
-            guardAI.ChangeState(new CalmDownState(guardAI));
+            guardAI.PlayerSeen();
         }
     }
 
@@ -49,21 +45,9 @@ public class GuardVision : MonoBehaviour
             if (distanceToPlayer < viewDistance)
             {
                 RaycastHit2D hit = Physics2D.Raycast(transform.position, directionToPlayer, viewDistance, obstructionMask | targetMask);
-                if (hit.collider != null)
+                if (hit.collider != null && hit.collider.CompareTag("Player"))
                 {
-                    if (hit.collider.CompareTag("Player"))
-                    {
-                        Debug.Log("Player detected");
-                        return true;
-                    }
-                    else
-                    {
-                        Debug.Log("Obstruction detected: " + hit.collider.name);
-                    }
-                }
-                else
-                {
-                    Debug.Log("No obstruction, player in sight");
+                    return true;
                 }
             }
         }
